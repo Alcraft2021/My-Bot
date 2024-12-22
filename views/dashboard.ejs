@@ -1,0 +1,81 @@
+<%- include('partials/header', { title: 'Dashboard - Bot Dashboard' }) %>
+
+<body></body>
+    <div class="container">
+        <h1 class="text-center mt-4">Dashboard</h1>
+        <p class="text-center">Welcome, <strong><%= user.username %></strong>!</p>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">User Info</h5>
+                        <p class="card-text">
+                            <strong>Username:</strong> <%= user.username %>#<%= user.discriminator %><br>
+                            <strong>ID:</strong> <%= user.id %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Servers</h5>
+                        <p class="card-text">
+                            Display the servers where the bot is present here!
+                        </p>
+                        <ul id="server-list" class="list-group" style="text-align: left;"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                /* Aseguramos que el contenido de la lista esté alineado a la izquierda */
+                #server-list .list-group-item {
+                    text-align: left; /* Alinea el texto de los elementos de la lista */
+                }
+            
+                #server-list img {
+                    margin-right: 10px; /* Espaciado entre la imagen y el texto */
+                }
+            </style>
+
+            <script>
+                // Obtén los servidores desde la API
+                fetch('/api/servers')
+                    .then(response => response.json())
+                    .then(servers => {
+                        const serverList = document.getElementById('server-list');
+        
+                        servers.forEach(server => {
+                            const serverItem = document.createElement('li');
+                            serverItem.className = 'list-group-item d-flex align-items-center';
+        
+                            serverItem.innerHTML = `
+                                <img src="${server.icon || '/images/default-icon.png'}" class="rounded-circle" alt="${server.name}" style="width: 40px; height: 40px; margin-right: 10px;">
+                                <div>
+                                    <h5 class="mb-1">${server.name}</h5>
+                                    <p class="mb-0">Miembros: ${server.memberCount || 'Desconocido'}</p>
+                                </div>
+                            `;
+                            serverList.appendChild(serverItem);
+                        });
+                    })
+                    .catch(err => console.error('Error fetching servers:', err));
+            </script>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Settings</h5>
+                        <p class="card-text">
+                            Configure your bot settings or commands here.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

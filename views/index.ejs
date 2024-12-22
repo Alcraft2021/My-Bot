@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<%- include('partials/header') %>
+<div class="container mt-5 text-center">
+    <h1>Welcome to Site 96 Dashboard</h1>
+    <% if (!user) { %>
+        <a href="/auth/login" class="btn btn-primary">Login with Discord</a>
+    <% } %>
+</div>
+<%- include('partials/footer') %>
